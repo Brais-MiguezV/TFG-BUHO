@@ -1,0 +1,437 @@
+:root {
+  --naranja-principal: #ff865c;
+  --naranja-principal-oscuro: #ad5b3f;
+  --azul-principal: rgb(20, 38, 58);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+@font-face {
+  font-family: "Manrope";
+  src: url(./fonts/Manrope/Manrope-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: "Cabin";
+  src: url(./fonts/Cabin/Cabin-VariableFont.ttf);
+}
+
+@font-face {
+  font-family: "cyberion";
+  src: url(./fonts/cyberion/Cyberion-Demo.otf);
+}
+
+@font-face {
+  font-family: "hackone";
+  src: url(./fonts/hackone-x-01-font/HackoneX02Demo-2O28d.ttf);
+}
+
+@font-face {
+  font-family: "Neptune";
+  src: url(./fonts/Neptune_Trial.otf);
+}
+
+@font-face {
+  font-family: "Zero";
+  src: url(./fonts/Zero\ Hour.otf);
+}
+
+@font-face {
+  font-family: "orbitron";
+  src: url(./fonts/Orbitron/Orbitron\ Medium.ttf);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: 5px;
+  width: 100vw;
+  background-color: var(--naranja-principal);
+}
+
+.logo img {
+  height: 70px;
+  width: 70px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 2rem;
+  font-family: "hackone";
+  font-weight: 300;
+}
+
+.navBarLink {
+  background-color: white;
+  border: 1px solid var(--naranja-principal);
+  border-radius: 2px;
+  transition: all 0.5s;
+  text-align: center;
+  font-family: "Cabin";
+  font-weight: 300;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.navBar > *,
+.navBar {
+  background-color: white;
+}
+
+.navBar {
+  border: 1px solid var(--naranja-principal);
+  border-bottom-left-radius: 15px;
+  padding: 5px;
+  box-shadow: 0 0 10px #3246a842;
+  width: 100%;
+  height: fit-content;
+}
+
+.navBarLink:hover {
+  background-color: var(--naranja-principal);
+  color: white;
+  box-shadow: 0 0 5px 0 hsl(230, 54%, 43%);
+  border: 1px solid #5cd5ff;
+  border-radius: 5px;
+}
+
+.navBarLink:hover .navBarImage {
+  filter: brightness(10000%);
+}
+
+.mainDiv {
+  display: grid;
+  width: 100vw;
+  grid-template-columns: 3fr 1fr;
+}
+
+.navBarImage {
+  width: 100%;
+  height: 100%;
+  max-width: 30px;
+  max-height: 30px;
+  filter: invert(34%) sepia(100%) saturate(3443%) hue-rotate(9deg)
+    brightness(102%) contrast(101%);
+  transition: all 0.5s;
+}
+
+.flex-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.seleccionado {
+  background-color: var(--naranja-principal);
+  color: white;
+  box-shadow: 0 0 5px 0 hsl(230, 54%, 43%);
+  border: 1px solid #5cd5ff;
+  border-radius: 5px;
+}
+
+.seleccionado .navBarImage {
+  filter: brightness(10000%);
+}
+
+.homeTitle {
+  font-size: 3em;
+  font-family: "hackone";
+  font-weight: 300;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.firstSection {
+  padding-top: 60px;
+  min-height: 100vh;
+  padding: 4vw;
+  max-width: 75vw;
+}
+
+.homeSubtitle {
+  font-size: 1.5rem;
+  font-family: "orbitron", "cyberion";
+  font-weight: 600;
+  text-align: left;
+  margin: 2rem auto;
+}
+
+p {
+  margin: 10px auto;
+  font-size: 1.2rem;
+  font-family: "Lato";
+  font-weight: 400;
+  text-align: justify;
+  color: #333;
+}
+
+a {
+  color: var(--naranja-principal);
+}
+
+.memeImg {
+  max-width: 300px;
+  width: 100%;
+  margin: 3rem auto;
+  border: 1px solid var(--naranja-principal);
+  border-radius: 5px;
+  box-shadow: 0 0 10px #5cd6ff68;
+}
+
+.orange {
+  color: var(--naranja-principal);
+}
+
+.homeTechs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2rem auto;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+}
+
+.homeTech {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--naranja-principal);
+  border-radius: 5px;
+  box-shadow: 0 0 10px #5cd6ff68;
+  width: 80%;
+  max-width: 500px;
+  margin: 0 auto;
+  transition: all 0.5s;
+}
+
+.homeTech img {
+  height: 170px;
+  width: 100%;
+  border-bottom: 1px solid var(--naranja-principal);
+  padding: 3rem;
+}
+
+.homeTech:hover {
+  box-shadow: 0 0 10px #ff925ca0;
+  transform: translate(0, -5px);
+}
+
+.textoTech {
+  padding: 1rem;
+}
+
+.cuestionarioSect {
+  background-color: var(--azul-principal);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px #000000b0;
+}
+
+.preguntaSect {
+  background-color: #fefefe;
+  padding: 1rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #000000b0;
+}
+
+.important {
+  color: rgb(219, 46, 46);
+}
+
+.pregunta {
+  font-size: x-large;
+  text-align: center;
+  margin: 2rem auto;
+  color: var(--naranja-principal-oscuro);
+  font-family: "orbitron";
+}
+
+.preText {
+  color: #464646;
+  font-size: 1.1rem;
+}
+
+pre code.hljs {
+  border-radius: 10px;
+  display: block;
+  overflow-x: scroll;
+  padding: 1em;
+  width: 100%;
+
+  margin: 0 auto;
+}
+
+.command {
+  width: 90%;
+  margin: 1rem auto;
+  overflow-x: scroll;
+}
+
+.notes {
+  margin: 1rem auto;
+  font-weight: 300;
+}
+
+.respuestas,
+.botonesMic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+}
+
+.respuesta {
+  background-color: rgb(214, 214, 214);
+  width: 70%;
+  min-height: 70px;
+  box-shadow: 0 0 5px #ad5a3f9b;
+  font-size: 1.3rem;
+  font-family: "orbitron";
+  transition: all 0.5s;
+}
+
+.respuesta:hover {
+  transform: translate(0, -5px);
+  box-shadow: 0 0 10px #ad5a3f9b;
+}
+
+.selected {
+  background-color: var(--naranja-principal-oscuro);
+  color: white;
+  border-radius: 20px;
+}
+
+.respuestaRender {
+  margin: 2rem auto;
+}
+
+.separador {
+  border: 1px solid var(--naranja-principal);
+  margin: 2rem auto;
+}
+
+.botonesMic {
+  margin: 2.5rem auto;
+}
+
+.butNorm {
+  width: 50%;
+  min-height: 50px;
+  box-shadow: 0 0 5px #ad5a3f9b;
+  font-size: large;
+  font-family: "orbitron";
+  transition: all 0.5s;
+  border-radius: 10px;
+}
+
+.anteriorBut {
+  background-color: rgb(186, 57, 57);
+  color: whitesmoke;
+  justify-self: start;
+}
+
+.siguienteBut {
+  background-color: green;
+  color: whitesmoke;
+  justify-self: end;
+}
+
+.butNorm:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.differentFont {
+  font-family: "orbitron";
+  font-size: 2.3rem;
+}
+
+.contact {
+  margin: 2rem auto;
+  background-color: var(--azul-principal);
+  color: #333;
+  padding: 1rem;
+  box-shadow: inset 0 0 20px var(--naranja-principal-oscuro);
+  border-radius: 10px;
+  width: 80%;
+}
+
+.contactForm {
+  background-color: #efefef;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+  border-radius: 20px;
+  font-family: "hackone";
+  padding: 2rem;
+}
+
+.contactForm > * {
+  margin: 0.5rem auto;
+  max-width: 40rem;
+  width: 80%;
+}
+
+.contactForm input, .contactForm textarea, .contactForm select {
+  border: 1px solid var(--naranja-principal);
+  border-radius: 5px;
+  padding: 1rem;
+  font-family: "Lato";
+}
+
+
+.buttonContact{
+  background-color: rgb(251, 171, 0);
+  color: white;
+  border: 1px solid var(--naranja-principal);
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-family: "orbitron";
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.5s;
+  margin: 1.5rem auto;
+}
+
+.buttonContact:hover{
+  transform: translate(0, -5px);
+  background-color: var(--naranja-principal);
+  border: 1px solid var(--naranja-principal);
+  box-shadow: 0 0 10px rgba(0, 162, 255, 0.623);
+}
+
+.headerBut{
+  background-color: var(--azul-principal);
+  margin: 0 2.5rem;
+  width: 60%;
+  text-align: center;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  justify-self: end;
+  border-radius: 20px;
+  transition: all 0.5s;
+  font-family: "hackone";
+}
+
+.headerBut:hover{
+  background-color: #5c7aff;
+  box-shadow: 0 0 10px rgba(0, 162, 255, 0.623);
+}
+
+
+
+
