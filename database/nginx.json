@@ -1,0 +1,28 @@
+[{"id": 1,
+    
+"preText": "Nginx es una de las tecnologías más utilizadas para actuar como servidor, por lo que es importante que sepas cómo protegerlo de la mejor manera.",
+"text": "¿Estás realizando una instalación desde cero?",
+"answers": [
+    {
+        "id": 1,
+        "text": "Sí",
+        "next": 2,
+        "additionalText": "Para realizar la instalación de Nginx desde cero, puedes seguir los pasos que se encuentran en la documentación oficial de Nginx: <a href=\"https://nginx.org/en/docs/install.html\">https://nginx.org/en/docs/install.html </a> ",
+        "important": false,
+        "notes": "",
+        "command": []
+    },
+    {
+        "id": 2,
+        "text": "No",
+        "next": 2,
+        "additionalText": "Como ya tienes Nginx instalado, es importante que verifiques que esté correctamente configurado y protegido.",
+        "important": false,
+        "notes": "",
+        "command": []
+    }
+],
+"last": false,
+"notes": "",
+"command": []
+}]

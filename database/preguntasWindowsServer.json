@@ -1,0 +1,836 @@
+[{
+    "id": 1,
+    
+    "preText": "A través de este cuestionario, podrás determinar si tu sistema Windows es seguro y comprobar si necesitas realizar alguna mejora. Por favor, responde a las siguientes preguntas:",
+    "text": "¿Estás realizando una instalación desde cero?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "next": 2,
+            "additionalText": "Al realizar una instalación desde cero, es importante que sigas las mejores prácticas de seguridad para proteger tu sistema Windows.",
+            "important": false,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 3,
+            "additionalText": "Como ya tienes el sistema instalado, es importante que compruebes si sigues las mejores prácticas de seguridad para proteger tu sistema Windows.",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "last": false,
+    "notes": "",
+    "command": []
+},
+{
+    "id": 2,
+    
+    "preText": "Si estás realizando una instalación desde cero, es importante que sigas las mejores prácticas de seguridad. La primera de ellas es: ",
+    "text": "¿Estás conectado a una red empresarial?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Como recomendación general, no deberías instalar software en un entorno empresarial sin la aprobación de tu departamento de TI o equivalente para tu empresa",
+            "next": 3,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 3,
+            "additionalText": "Bien hecho, no deberías instalar software en un entorno empresarial sin la aprobación necesaria",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "last": false,
+    "notes": "",
+    "command": []
+},
+{
+    "id": 3,
+    
+    "preText": "Como recomendación general, deberías tener un firewall activado en tu sistema windows. Para comprobar esto puedes ejecutar el siguiente comando desde PowerShell en modo administrador:",
+    "text": "¿Tienes un firewall? Esto se puede ver en los campos `AMServiceEnabled`, `AntispywareEnabled` y `RealTimeProtectionEnabled`",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "El uso de un firewall es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 4,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 4,
+            "additionalText": "Es importante el uso de un firewall para proteger tu sistema. Puedes utilizar Windows Defender como firewall, para activarlo utiliza los siguientes comandos: ",
+            "important": true,
+            "command": [
+                "Set-Service -Name WinDefend -StartupType Automatic",
+                "Start-Service -Name WinDefend",
+                "Set-MpPreference -DisableRealtimeMonitoring $false"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-MpComputerStatus"
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 4,
+    
+    "preText": "El siguiente paso es comprobar si el sistema es accesible desde Internet y ver los puertos que son accesibles. Para ello, necesitas instalar <a href=\"https://nmap.org\">Nmap</a> y ejecutar el siguiente comando:",
+    "text": "¿Tienes puertos abiertos que no deberían estarlo?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que cierres los puertos que no necesitas para evitar posibles ataques. Utilizando el comando puedes cerrar los puertos que no necesitas",
+            "command": [
+                "New-NetFirewallRule -DisplayName \"Block Port X\" -Direction Inbound -LocalPort X -Protocol TCP -Action Block",
+                "New-NetFirewallRule -DisplayName \"Bloquear Puerto Saliente X\" -Direction Outbound -Action Block -Protocol TCP -LocalPort X"
+            ],
+            "notes": "Reemplaza X por el número de puerto que quieres cerrar",
+            "next": 5
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 5,
+            "additionalText": "¡Bien hecho! Es importante no tener más puertos habilitados de los necesarios",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": ["nmap -p 1-65535 X"],
+    "last": false,
+    "notes": "Siendo X la dirección IP del sistema a analizar"
+},
+{
+    "id": 5,
+    
+    "preText": "Uno de los principios bases de la protección de sistemas es el uso de aplicaciones esenciales y no tener aplicaciones que no se usan, pues estas representan un posible punto de entrada para un ataque.",
+    "text": "¿Tienes aplicaciones que no usas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que desinstales las aplicaciones que no usas para evitar posibles ataques",
+            "next": 6,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 6,
+            "additionalText": "Bien, una instalación mínima favorece la seguridad",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "last": false,
+    "notes": "",
+    "command": []
+},
+{
+    "id": 6,
+    
+    "preText": "El siguiente paso es comprobar la configuración de UAC (Control de Cuentas de Usuario) para minimizar los cambios no autorizados, para comprobar la configuración ejecuta lo siguiente:",
+    "text": "¿Tienes UAC activado y con las configuraciones necesarias?",
+    "notes": "Las configuraciones optimas son `EnableLUA=1`, `ConsentPromptBehaviorAdmin=2`, `ConsentPromptBehaviorUser=1`",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "El uso de UAC es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 7,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 7,
+            "additionalText": "Es importante el uso de UAC para proteger tu sistema. Puedes activarlo y configurarlo con los siguientes comandos: ",
+            "important": true,
+            "command": [
+                "Set-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name EnableLUA -Value 1",
+                "Set-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name ConsentPromptBehaviorAdmin -Value 2",
+                "Set-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name ConsentPromptBehaviorUser -Value 1"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "$enableLUA = Get-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" -Name \"EnableLUA\"",
+        "Write-Output \"EnableLUA: $($enableLUA.EnableLUA)\" # Leer el valor de Enable LUA",
+        "$consentPromptBehaviorAdmin = Get-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" -Name \"ConsentPromptBehaviorAdmin\"",
+        "Write-Output \"ConsentPromptBehaviorAdmin: $($consentPromptBehaviorAdmin.ConsentPromptBehaviorAdmin)\" # Leer el valor de ConsentPromptBehaviorAdmin",
+        "$consentPromptBehaviorUser = Get-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" -Name \"ConsentPromptBehaviorUser\"",
+        "Write-Output \"ConsentPromptBehaviorUser: $($consentPromptBehaviorUser.ConsentPromptBehaviorUser)\" # Leer el valor de ConsentPromptBehaviorUser"
+    ],
+    "last": false
+},
+{
+    "id": 7,
+    
+    "preText": "El siguiente paso es desactivar las cuentas de usuario de administrador local por defecto. Para comprobar si está activada primero ejecutar el comando:",
+    "text": "¿Tienes las cuentas de usuario de administrador local desactivadas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Desactivar las cuentas de usuario de administrador local es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 8,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 8,
+            "additionalText": "Es importante desactivar las cuentas de usuario de administrador local para proteger tu sistema. Puedes desactivarlas con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Disable-LocalUser -Name \"Administrator\""
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-LocalUser -Name \"Administrator\""
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 8,
+    
+    "preText": "El siguiente paso es desactivar las cuentas de usuario de invitado. Para comprobar si está activada primero ejecutar el comando:",
+    "text": "¿Tienes las cuentas de usuario invitado desactivadas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Desactivar las cuentas de usuario de invitado es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 9,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 9,
+            "additionalText": "Es importante desactivar las cuentas de usuario de invitado para proteger tu sistema. Puedes desactivarlas con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Disable-LocalUser -Name \"Guest\""
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-LocalUser -Name \"Guest\""
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 9,
+    
+    "preText": "El siguiente paso es comprobar si el modo de aprobación está activado para la cuenta de administrador integrada. Activar esta opción protege al usuario administrador. Para comprobar el estado ejecutar:",
+    "text": "¿Tienes el modo de aprobación activado para la cuenta de administrador integrada?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Activar el modo de aprobación para la cuenta de administrador integrada es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 10,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 10,
+            "additionalText": "Es importante activar el modo de aprobación para la cuenta de administrador integrada para proteger tu sistema. Puedes activarlo con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Set-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name \"FilterAdministratorToken\" -Value 1"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name \"FilterAdministratorToken\""
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 10,
+    
+    "preText": "El siguiente paso es co,probar si se solicita una contraseña para la elevación de privilegios. Activar esto implica que se tenga que ingresar una contraseña cada vez que una tarea requiera privilegios elevados. Para comprobar si está activado ejecutar:",
+    "text": "¿Se solicita una contraseña para la elevación de privilegios?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Solicitar una contraseña para la elevación de privilegios es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 11,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 11,
+            "additionalText": "Es importante solicitar una contraseña para la elevación de privilegios para proteger tu sistema. Puedes activarlo con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Set-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name \"ConsentPromptBehaviorAdmin\" -Value 1"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-ItemProperty -Path HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System -Name \"ConsentPromptBehaviorAdmin\""
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 11,
+    
+    "preText": "El siguiente paso es minimizar los protocolos utilizados en el servidor. Para ver cuales están activos se puede ejecutar el siguiente comando:",
+    "text": "¿Tienes protocolos que no usas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que desactives los protocolos que no necesitas para evitar posibles ataques. Utilizando el siguiente comando para desactivarlos:",
+            "command": [
+                "Disable-WindowsOptionalFeature -Online -FeatureName X",
+                "Disable-WindowsOptionalFeature -Online -FeatureName X -NoRestart"
+            ],
+            "notes": "Donde X es el nombre del protocolo que quieres desactivar",
+            "next": 12
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 12,
+            "additionalText": "¡Bien hecho! Es importante no tener más protocolos habilitados de los necesarios",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "netstat -s | Select-String -Pattern \"^[a-zA-Z]\""
+    ],
+    "notes": "Los protocoles más habituales que no son seguros son: `FTP`, `HTTP`, `telnet`, `POP3`, `IMAP`, `SMTP`, `SNMP1`, `SNMP2`, `NTP`, `TFTP` y `RLOGIN`.",
+    "last": false
+},
+{
+    "id": 12,
+    
+    "preText": "El siguiente paso es comprobar las direcciones de red a las que escucha el servidor. Para ver cuales están activas se puede ejecutar el siguiente comando:",
+    "text": "¿Tienes direcciones de red que no usas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que desactives las direcciones de red que no necesitas para evitar posibles ataques. Utilizando el siguiente comando para desactivarlas:",
+            "command": [
+                "New-NetFirewallRule -DisplayName \"Block IP X\" -Direction Inbound -RemoteAddress X -Action Block"
+            ],
+            "notes": "Donde X es la dirección de red que quieres desactivar e Y el protocolo que se quiere desactivar",
+            "next": 13
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 13,
+            "additionalText": "¡Bien hecho! Es importante no tener más direcciones de red habilitadas de las necesarias",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "Get-NetTCPConnection -State Listen | Format-Table -Property LocalAddress, LocalPort, OwningProcess"
+    ],
+    "notes": "",
+    "last": false
+},
+{
+    "id": 13,
+    
+    "preText": "Se puede realizar el mismo proceso para los puertos en los que escucha el servidor. Para esto se puede ejecutar el comando:",
+    "text": "¿Tienes puertos abiertos que no usas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que cierres los puertos que no necesitas para evitar posibles ataques. Utilizando el comando siguiente puedes cerrar los puertos que no necesitas:",
+            "command": [
+                "New-NetFirewallRule -DisplayName \"Block Y Port X\" -Direction Inbound -Protocol Y -LocalPort X -Action Block"
+            ],
+            "notes": "Reemplaza X por el número de puerto que quieres cerrar e Y por el protocolo que quieres cerrar",
+            "next": 14
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 14,
+            "additionalText": "¡Bien hecho! Es importante no tener más puertos habilitados de los necesarios",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "netstat -a -n -o | Select-String -Pattern \"LISTENING\""
+    ],
+    "notes": "",
+    "last": false
+},
+{
+    "id": 14,
+    
+    "preText": "Esto también se puede realizar para los servicios que están activos en el servidor. Para esto se puede ejecutar el comando:",
+    "text": "¿Tienes servicios activos que no usas?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que desactives los servicios que no necesitas para evitar posibles ataques. Utilizando el comando siguiente puedes desactivar los servicios que no necesitas:",
+            "command": [
+                "Stop-Service -Name \"X\" -Force",
+                "Set-Service -Name \"X\" -StartupType Disabled"
+            ],
+            "notes": "Reemplaza X por el nombre del servicio que quieres desactivar. El segundo comando es para que no se inicie el servicio al arrancar el sistema.",
+            "next": 15
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 15,
+            "additionalText": "¡Bien hecho! Es importante no tener más servicios habilitados de los necesarios",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "Get-Service | Where-Object { $_.Status -eq 'Running' } | Format-Table -Property Name, DisplayName, Status"
+    ],
+    "notes": "",
+    "last": false
+},
+{
+    "id": 15,
+    
+    "preText": "El siguiente paso es comprobar si la política de contraseñas es segura. Los valores ideales son: <ul> <li>MinPasswordLength=8</li> <li>MinPasswordAge=1</li> <li>MaxPasswordAge=42</li> <li>ComplexityEnabled=True</li> <li>ReversibleEncryptionEnabled=False</li> <li>PasswordHistoryCount=True</li> </ul> Para comprobar la configuración ejecuta lo siguiente:",
+    "text": "¿Tienes una política de contraseñas segura?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Tener una política de contraseñas segura es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 16,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 16,
+            "additionalText": "Es importante tener una política de contraseñas segura para proteger tu sistema. Puedes configurarla con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Import-Module ActiveDirectory; Set-ADDefaultDomainPasswordPolicy -MinPasswordLength 12 -PasswordHistoryCount 24 -MinPasswordAge (New-TimeSpan -Days 1) -MaxPasswordAge (New-TimeSpan -Days 42) -ComplexityEnabled $true -ReversibleEncryptionEnabled $false"
+            ],
+            "notes": ""
+        }
+    ],
+    "command":[
+        "Import-Module ActiveDirectory",
+        "Get-ADDefaultDomainPasswordPolicy"
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 16,
+
+    "preText": "",
+    "text": "¿Utilizas SMB?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que tengas las configuraciones adecuadas para SMB",
+            "command": [
+            ],
+            "notes": "",
+            "next": 17
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 18,
+            "additionalText": "¡Bien hecho! Es importante no tener habilitado SMB si no lo necesitas",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "last": false,
+    "notes": "",
+    "command": []
+},
+{
+    "id": 17,
+    
+    "preText": "Al tener activado SMB, debes tener ciertas configuraciones para asegurar la seguridad del protocolo. La primera que debes comprobar es si la firma de paquetes SMB está activada. Para comprobar esto, puedes ejecutar:",
+    "text": "¿Tienes la firma de paquetes SMB activada?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Tener la firma de paquetes SMB activada es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 18,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 18,
+            "additionalText": "Es importante tener la firma de paquetes SMB activada para proteger tu sistema. Puedes activarla con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "# Lado servidor",
+                "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters\" -Name \"RequireSecuritySignature\" -Value 1",
+                "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters\" -Name \"EnableSecuritySignature\" -Value 1",
+                "",
+                "# Lado cliente",
+                "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\" -Name \"RequireSecuritySignature\" -Value 1",
+                "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\" -Name \"EnableSecuritySignature\" -Value 1"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters\" | Select-Object RequireSecuritySignature, EnableSecuritySignature # Lado servidor",
+        "Get-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\LanmanWorkstation\\Parameters\" | Select-Object RequireSecuritySignature, EnableSecuritySignature # Lado cliente"
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 18,
+    
+    "preText": "Para garantizar el cifrado de datos, se debe implementar Bitlocker. Para comprobar si está activado se puede ejecutar:",
+    "text": "¿Tienes Bitlocker activado?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Tener Bitlocker activado es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 19,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 19,
+            "additionalText": "Es importante tener Bitlocker activado para proteger tu sistema. Puedes activarlo con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Enable-BitLocker -MountPoint \"C:\" -EncryptionMethod X -UsedSpaceOnly -PasswordProtector"
+            ],
+            "notes": "Donde X es el método de cifrado que quieres utilizar"
+        }
+    ],
+    "command": [
+        "Get-BitLockerVolume"
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 19,
+    
+    "preText": "Dado que IPv6 es una tecnología que no está ampliamente utilizada, es recomendable evitar su uso. Para comprobar si está activado se puede ejecutar: ",
+    "text": "¿Tienes IPv6 activado?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que desactives IPv6 para evitar posibles ataques. Utilizando el siguiente comando para desactivarlo:",
+            "command": [
+                "New-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters\" -Name \"DisabledComponents\" -Value 0xFF -PropertyType DWORD -Force",
+                "Restart-Computer"
+            ],
+            "notes": "Donde X es el nombre de la interfaz de red que quieres desactivar",
+            "next": 20
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 20,
+            "additionalText": "¡Bien hecho! Es importante no tener habilitado IPv6 si no lo necesitas",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "Get-NetAdapterBinding -ComponentID ms_tcpip6"
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 20,
+    
+    "preText": "El siguiente paso es comprobar si el sistema está actualizado. Para comprobar si hay actualizaciones pendientes se puede ejecutar:",
+    "text": "¿Tienes actualizaciones pendientes?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que instales las actualizaciones pendientes para proteger tu sistema Windows",
+            "command": [
+                "Install-WindowsUpdate -AcceptAll -AutoReboot",
+                "Set-ItemProperty -Path \"HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\" -Name \"AUOptions\" -Value 4 -Type DWord",
+                "gpupdate /force"
+            ],
+            "notes": "",
+            "next": 21
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 21,
+            "additionalText": "¡Bien hecho! Es importante tener el sistema actualizado",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "Install-Module -Name PSWindowsUpdate -Force -AllowClobber",
+        "Import-Module PSWindowsUpdate",
+        "Get-WindowsUpdate -AcceptAll -AutoReboot"
+    ],
+    "last": false,
+    "notes": ""
+},
+{
+    "id": 21,
+    
+    "preText": "El autoplay y el autorun son características que pueden ser explotada por malware. Para comprobar si está activado se puede ejecutar:",
+    "text": "¿Tienes el autoplay y el autorun activado?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que desactives el autoplay y el autorun para evitar posibles ataques. Utilizando el siguiente comando para desactivarlo:",
+            "command": [
+                "Set-ItemProperty -Path \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" -Name \"NoDriveTypeAutoRun\" -Value 0xFF -Type DWord",
+                "Set-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" -Name \"NoDriveTypeAutoRun\" -Value 0xFF -Type DWord"
+            ],
+            "notes": "",
+            "next": 22
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 22,
+            "additionalText": "¡Bien hecho! Es importante no tener habilitado el autoplay y el autorun si no lo necesitas",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command": [
+        "Get-ItemProperty -Path \"HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" -Name \"NoDriveTypeAutoRun\"",
+        "Get-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" -Name \"NoDriveTypeAutoRun\""
+    ],
+    "last": false,
+    "notes": "Si el valor es 0xFF, el autoplay y el autorun están desactivados"
+},
+{
+    "id": 22,
+    
+    "preText": "Es bastante frecuente que algunas actualizaciones dejen archivos corruptos o innecesarios. Para comprobar si hay archivos corruptos o innecesarios se puede ejecutar:",
+    "text": "¿Tienes archivos corruptos o innecesarios?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que elimines los archivos corruptos o innecesarios para proteger tu sistema Windows. El comando ejecutado para comprobar ya intenta eliminar los archivos de este tipo",
+            "command": [],
+            "notes": "",
+            "next": 23
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 23,
+            "additionalText": "¡Bien hecho! Es importante no tener archivos corruptos o innecesarios",
+            "important": false,
+            "notes": "",
+            "command": []
+        }
+    ],
+    "command":[
+        "sfc /scannow"
+    ],
+    "notes": "",
+    "last": false
+},
+{
+    "id": 23,
+    
+    "preText": "Si el sistema utiliza FTP, debe eliminarse el usuario anónimo. Para comprobar si está activado se puede ejecutar:",
+    "text": "¿Tienes el usuario anónimo activado en FTP?",
+    "answers":[
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": true,
+            "additionalText": "Es importante que este usuario no esté activado para que no se puedan conectar usuarios anónimos al sistema. Para desactivarlo ejecuta:",
+            "command":[
+                "Import-Module WebAdministration",
+                "Set-WebConfigurationProperty -Filter /system.ftpServer/security/authentication/anonymousAuthentication -PSPath 'IIS:\\' -Name enabled -Value $false"
+            ],
+            "notes": "",
+            "next": 24
+        },
+        {
+            "id": 2,
+            "text": "No lo tengo / No uso FTP",
+            "important": false,
+            "additionalText": "¡Bien hecho! Es importante no tener el usuario activado o no tener FTP activado si no lo usas",
+            "command": [],
+            "notes": "",
+            "next": 24
+        }
+    ],
+    "command":[
+        "Import-Module WebAdministration",
+        "Get-WebConfiguration -Filter /system.ftpServer/security/authentication/anonymousAuthentication -PSPath 'IIS:\\' | Select-Object -Property enabled"
+    ],
+    "notes": "",
+    "last": false
+},
+{
+    "id": 24,
+    
+    "preText": "Se debe prevenir la conversón SID a nombre de usuario y viciversa. Para comprobar si ya se tiene la configuración segura se puede ejecutar el comando:",
+    "text": "¿Tienes la conversión SID a nombre de usuario y viceversa desactivada?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Tener la conversión SID a nombre de usuario y viceversa desactivada es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 25,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 25,
+            "additionalText": "Es importante tener la conversión SID a nombre de usuario y viceversa desactivada para proteger tu sistema. Puedes desactivarla con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\" -Name \"RestrictAnonymous\" -Value 2 -Type DWord"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\" | Select-Object RestrictAnonymous"
+    ],
+    "last": false,
+    "notes": "El valor más seguro que se puede tener es 0"
+},
+{
+    "id": 25,
+    
+    "preText": "Por último, se debe evitar la enumeración de cuentas SAM por usuarios anónimos, para evitar que usuarios anónimos puedan saber la lista de usuarios del sistema. Para comprobar si está activada, se puede ejecutar el siguiente comando:",
+    "text": "¿Tienes la enumeración de cuentas SAM por usuarios anónimos desactivada?",
+    "answers": [
+        {
+            "id": 1,
+            "text": "Sí",
+            "important": false,
+            "additionalText": "Tener la enumeración de cuentas SAM por usuarios anónimos desactivada es una de las mejores prácticas de seguridad para proteger tu sistema Windows",
+            "next": 0,
+            "notes": "",
+            "command": []
+        },
+        {
+            "id": 2,
+            "text": "No",
+            "next": 0,
+            "additionalText": "Es importante tener la enumeración de cuentas SAM por usuarios anónimos desactivada para proteger tu sistema. Puedes desactivarla con los siguientes comandos:",
+            "important": true,
+            "command": [
+                "Set-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\" -Name \"RestrictAnonymousSAM\" -Value 2 -Type DWord"
+            ],
+            "notes": ""
+        }
+    ],
+    "command": [
+        "Get-ItemProperty -Path \"HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Lsa\" | Select-Object RestrictAnonymousSAM"
+    ],
+    "last": true,
+    "notes": "El valor más seguro que se puede tener es 2"
+}
+]

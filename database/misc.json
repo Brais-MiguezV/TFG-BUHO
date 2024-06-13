@@ -1,0 +1,25 @@
+[{
+    "tech": "windowsServer",
+    "name": "Windows Server",
+    "paragraphs": [
+      "La primera versión del sistema fue Windows 2000 Server, lanzada a principios del nuevo milenio. Fue concebida para ser el servidor de archivos, impresión y web de PYMEs. Una solución extraordinaria para cuando no era necesario contar con un servidor dedicado a cada tarea, pudiendo así tener todo centralizado en un único servidor.",
+      "Windows Server está desarrollado en C++ y Asambler. Una de sus características más destacadas para equipos de trabajo es que es un sistema multiusuario. Por lo tanto, es un sistema que pueden utilizar todos los empleados de una determinada compañía, centralizando así la gestión y administración de archivos.",
+      "Las ventajas que ofrece Windows Server como Sistema Operativo son relevantes para favorecer el trabajo de los programadores y desarrolladores y, por tanto, mejorar los resultados corporativos. Tiene una administración muy sencilla, de modo que el sistema se puede manejar de forma rápida y eficiente. Además, destaca por ser muy flexible.",
+      "Los comandos que se muestran durante el cuestionario deben ejecutarse desde Powershell con permisos de administrador"
+    ],
+    "image": "windowsServer.png",
+    "icon": "windowsServer.png",
+    "language": "powershell"
+},
+{
+  "tech": "nginx",
+  "name": "Nginx",
+  "paragraphs":[
+    "Nginx es un servidor web de código abierto que, desde su éxito inicial como servidor web, ahora también es usado como proxy inverso, cache de HTTP, y balanceador de carga.",
+    "Nginx creado originalmente por Igor Sysoev, y tuvo su primer lanzamiento público en octubre de 2004. Igor concibió inicialmente el software como una respuesta al problema C10K, que se refiere al problema de rendimiento de manejar 10,000 conexiones concurrentes.",
+    "Debido a que sus raíces yacen en la optimización del rendimiento bajo escala, Nginx a menudo supera a otros populares servidores web en pruebas de rendimiento (Benchmarks), especialmente en situaciones con contenido estático y/o un elevado número de solicitudes concurrentes."
+  ],
+  "image": "nginx.png",
+  "icon": "nginx.png",
+  "language": "bash"
+}]
