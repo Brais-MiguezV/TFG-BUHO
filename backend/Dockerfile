@@ -7,8 +7,11 @@ WORKDIR /app
 # Copy the local code to the container
 COPY . .
 
+# Set environment variables
+ENV TMPDIR=/var/tmp
+
 # Install dependencies
-RUN pip install fastapi uvicorn motor pytz
+RUN pip install --no-cache-dir fastapi uvicorn motor pytz
 
 # Expose the port the app runs on
 EXPOSE 8000
