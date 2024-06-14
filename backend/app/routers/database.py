@@ -2,9 +2,8 @@ import motor.motor_asyncio
 from bson.codec_options import CodecOptions
 import pytz
 
-MONGO_URL = "mongodb://localhost:27017"
+MONGO_URL = "mongodb://mongodb:27017"
 MONGO_DB = "BUHO"
-MONGO_COLLECTION = "windowsServer"
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URL)
 timezone = pytz.timezone("Europe/Madrid")

@@ -1,16 +1,19 @@
+
 services:
   mongodb:
-    image: mongodb/mongodb-community-server:latest
+    build:
+      context: ./mongodb
     container_name: mongodb
     ports:
       - '27017:27017'
     volumes:
       - mongo_data:/data/db
       - ./database:/database
-    entrypoint: [ "/database/restore.sh" ]
 
   backend:
-    image: tiangolo/uvicorn-gunicorn-fastapi:python3.8
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: fastapi_backend
     ports:
       - '8000:8000'
