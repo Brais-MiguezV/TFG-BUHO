@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+motor
+pytz
+pymongo==3.12.0
+email-validator==1.1.3
