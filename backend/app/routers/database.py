@@ -1,7 +1,5 @@
 import motor.motor_asyncio
 from bson.codec_options import CodecOptions
-import os
-import asyncio
 import pytz
 
 MONGO_URL = "mongodb://localhost:27017"

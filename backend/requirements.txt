@@ -1,6 +1,7 @@
+motor==2.5.1
+pytz==2021.3
 fastapi
 uvicorn
-motor
-pytz
 pymongo
 email-validator
+routers
