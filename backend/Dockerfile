@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN pip install --no-cache-dir fastapi uvicorn motor python-dotenv 
+RUN pip install --no-cache-dir fastapi uvicorn motor python-dotenv pytz
 
 # Expose the port the app runs on
 EXPOSE 8000
