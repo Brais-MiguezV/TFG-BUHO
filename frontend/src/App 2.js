@@ -10,8 +10,8 @@ function App() {
       <BrowserRouter>
         <Header />
         <div className="mainDiv">
-          <LateralNav />
           <Pages />
+        <LateralNav />
         </div>
       </BrowserRouter>
     </>
