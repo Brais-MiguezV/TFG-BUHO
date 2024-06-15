@@ -13,6 +13,7 @@ function Pages() {
         <Route path="/" element={<Home />} /> {/*// this is the default route*/}
         <Route path="/tech/:tech" element={<Tech />} />
         <Route path="contact" element={<Contact />} />
+
      
       </Routes>
     </AnimatePresence>

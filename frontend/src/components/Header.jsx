@@ -2,7 +2,6 @@ import React from "react";
 import logo from "../logo.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Header() {
   return (
@@ -25,7 +24,7 @@ function Header() {
 
         <Link to="/contact" className="headerBut">
           <button className="">
-            <FontAwesomeIcon icon="fa-regular fa-comments" />
+            <img src={process.env.PUBLIC_URL + "/images/message.png"} alt="Imagen de mensaje" style={{"width": "100%", "height": "100%"}}/>
           </button>
         </Link>
       </header>

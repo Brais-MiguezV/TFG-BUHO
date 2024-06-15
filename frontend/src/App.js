@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
+
         <Header />
+        
         <div className="mainDiv">
           <LateralNav />
           <Pages />
