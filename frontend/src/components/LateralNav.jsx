@@ -58,7 +58,7 @@ function LateralNav() {
         initial={{ x: -300 }}
         transition={{ duration: 0.5 }}
         className={`${
-          isCollapsed && isMobile ? "fixed top-0 left-0 h-full z-40 bg-white shadow-lg" : "relative"
+          isCollapsed && isMobile ? "fixed top-0 left-0 h-full z-40 bg-white shadow-lg hidden" : "relative"
         } ${isMobile ? "" : "block md:block"}`}
         style={{ width: isMobile ? (isCollapsed ? '0' : '16rem') : 'auto' }}
       >
