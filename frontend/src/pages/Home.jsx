@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 function Home() {
-  const [datos, setDatos] = useState([]);
+  const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => { // Hook para obtener los datos de las tecnologías
+    const fetchData = async () => {  // Función asíncrona para obtener los datos de las tecnologías
       try {
         const response = await fetch(`http://${window.location.hostname}:8000/tecnologias`);
         const data = await response.json();
@@ -16,8 +16,8 @@ function Home() {
       }
     };
 
-    fetchData();
-    window.scrollTo(0, 0);
+    fetchData(); // Llamar a la función para obtener los datos
+    window.scrollTo(0, 0); // Hacer scroll al principio de la página
     
   }, []);
 

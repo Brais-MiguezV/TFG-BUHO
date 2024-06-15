@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import funcionesCuestionario
-
-app = FastAPI()
+ 
+app = FastAPI()  # Creación de la aplicación
 
 app.add_middleware(
     CORSMiddleware,
@@ -11,6 +11,6 @@ app.add_middleware(
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+)  # Configuración de CORS
 
-app.include_router(funcionesCuestionario.router)
+app.include_router(funcionesCuestionario.router)  # Inclusión de las rutas

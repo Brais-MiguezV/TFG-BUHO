@@ -4,31 +4,34 @@ import Cuestionario from "../components/Cuestionario";
 import { motion } from "framer-motion";
 
 function Tech() {
-  const location = useLocation();
+  const location = useLocation(); // Hook para obtener la ubicación actual
 
-  const locationSplit = location.pathname.split("/");
+  const locationSplit = location.pathname.split("/"); // Dividir la ubicación actual en partes
 
-  const actualTech = locationSplit[locationSplit.length - 1];
+  const actualTech = locationSplit[locationSplit.length - 1]; // Obtener la última parte de la ubicación actual (la tecnología actual)
 
-  const [datos, setDatos] = useState([]);
+  const [datos, setDatos] = useState([]); // Estado para almacenar los datos de la tecnología actual
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => { // Hook para obtener los datos de la tecnología actual
+    const fetchData = async () => { // Función asíncrona para obtener los datos de la tecnología actual
       try {
         const response = await fetch(
           `http://${window.location.hostname}:8000/texto?tech=` + actualTech
         );
+
         const data = await response.json();
         setDatos(data);
+
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
 
-    fetchData();
-    window.scrollTo(0, 0);
-  }, [actualTech]);
+    fetchData(); // Llamar a la función para obtener los datos
+    window.scrollTo(0, 0); // Hacer scroll al principio de la página
 
+  }, [actualTech]);  // Ejecutar el hook cada vez que actualTech cambie
+ 
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}

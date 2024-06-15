@@ -2,46 +2,51 @@ import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars } from "react-icons/fa"; // Import an icon for the toggle button
+import { FaBars } from "react-icons/fa";
 
 function LateralNav() {
-  const [datos, setDatos] = useState([]);
-  const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 800);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
-  const location = useLocation();
 
-  const locationSplit = location.pathname.split("/");
-  const actualTech = locationSplit[locationSplit.length - 1];
+  const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías a mostrar
+  const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 800); // Estado para saber si el menú está colapsado
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800); // Estado para saber si la pantalla es móvil
+  const location = useLocation(); // Hook para obtener la ubicación actual
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const locationSplit = location.pathname.split("/"); // Dividir la ubicación actual en partes
+  const actualTech = locationSplit[locationSplit.length - 1]; // Obtener la última parte de la ubicación actual (la tecnología actual)
+
+  useEffect(() => { // Hook para obtener los datos de las tecnologías
+
+    const fetchData = async () => { // Función asíncrona para obtener los datos de las tecnologías
       try {
-        const backendPort = "8000"; // Define the backend port if different from the frontend
-        const apiUrl = `http://${window.location.hostname}:${backendPort}/tecnologias`;
+        const backendPort = "8000";
+        const apiUrl = `http://${window.location.hostname}:${backendPort}/tecnologias`; // URL de la API para obtener las tecnologías
         const response = await fetch(apiUrl);
         const data = await response.json();
         setDatos(data);
+
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error("Error fetching data: ", error); // Mostrar error en consola si no se pueden obtener los datos
       }
     };
 
-    fetchData();
+    fetchData(); // Llamar a la función para obtener los datos
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 800);
-      if (window.innerWidth >= 800) {
-        setIsCollapsed(false);
-      }
+  useEffect(() => { // Hook para saber si la pantalla es móvil y si el menú está colapsado
+    const handleResize = () => { // Función para manejar el evento de redimensionar la pantalla
+      setIsMobile(window.innerWidth < 800); // Actualizar el estado de isMobile si la pantalla es menor a 800px
+      if (window.innerWidth >= 800) { // Si la pantalla es mayor o igual a 800px
+        setIsCollapsed(false); // Actualizar el estado de isCollapsed a false
+      } 
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize); // Añadir un evento para manejar el redimensionamiento de la pantalla
+
+    return () => { // Función para limpiar el evento de redimensionar la pantalla
+      window.removeEventListener("resize", handleResize); // Eliminar el evento de redimensionar la pantalla
     };
-  }, []);
+
+  }, []); // Ejecutar el hook solo una vez
 
   return (
     <div>

@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 
 function Contact() {
-  const sendEmail = async (event) => {
-    event.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
+  const sendEmail = async (event) => { // Función para enviar el email
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
-    if (name === "" || email === "" || message === "") {
-      alert("Por favor, rellena todos los campos");
-      return;
+    const name = document.getElementById("name").value; // Obtener el valor del campo nombre
+    const email = document.getElementById("email").value; // Obtener el valor del campo email
+    const message = document.getElementById("message").value; // Obtener el valor del campo mensaje
+
+    if (name === "" || email === "" || message === "") { // Si alguno de los campos está vacío
+      alert("Por favor, rellena todos los campos"); // Mostrar un mensaje de alerta
+      return; // Salir de la función
     }
 
-    const emailData = {
-      subject: "Sugerencia de BUHO",
-      sender: email,
-      body: `
-                Nombre: ${name}
+    const emailData = { // Datos del email
+      subject: "Sugerencia de BUHO", // Asunto del email
+      sender: email, // Remitente del email
+      body: ` 
+                Nombre: ${name} 
                 Email: ${email}
                 Mensaje: ${message}
             `,
@@ -30,35 +31,39 @@ function Contact() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(emailData),
-      });
+      }); // Enviar el email
 
-      if (response.ok) {
-        alert("Email enviado con éxito");
+      if (response.ok) { 
+        alert("Email enviado con éxito"); // Mostrar mensaje de éxito
       } else {
-        alert("Error al enviar el email");
+        alert("Error al enviar el email"); // Mostrar mensaje de error
       }
+
     } catch (error) {
-      console.error("Error sending email: ", error);
-      alert("Error al enviar el email");
+      console.error("Error sending email: ", error); // Mostrar error en consola
+      alert("Error al enviar el email"); // Mostrar mensaje de error
     }
   };
 
-  const [datos, setDatos] = useState([]);
+  const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías
 
-  useEffect(() => {
+  useEffect(() => { // Hook para obtener los datos de las tecnologías
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/tecnologias");
+        const response = await fetch(`http://${window.location.hostname}:8000/tecnologias`); // Obtener los datos de las tecnologías
         const data = await response.json();
         setDatos(data);
+
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
 
-    fetchData();
-    window.scrollTo(0, 0);
-  }, []);
+    fetchData(); // Llamar a la función para obtener los datos
+
+    window.scrollTo(0, 0); // Hacer scroll al principio de la página
+
+  }, []); // Ejecutar el hook solo una vez
 
   return (
     <section className="firstSection">

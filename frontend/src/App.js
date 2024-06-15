@@ -7,7 +7,7 @@ import Pages from "./pages/Pages";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter> 
 
         <Header />
         

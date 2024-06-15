@@ -1,135 +1,173 @@
 import React, { useEffect, useState } from "react";
 import Lowlight from "react-lowlight";
-import registerLanguage from "./auxiliar"; // Import the utility function
+import registerLanguage from "./auxiliar";
 import { motion } from "framer-motion";
 import DOMPurify from "dompurify";
 
 import "highlight.js/styles/github-dark.css";
 
-// Register the languages
-registerLanguage('bash');
+registerLanguage('bash'); // Registrar el lenguaje bash por defecto
 
 function Cuestionario({ tech, language }) {
-  const techAct = tech;
-  const languageAct = language;
+
+  const techAct = tech; // Guardar la tecnología actual
+  const languageAct = language; // Guardar el lenguaje actual
+
   const [preguntasArray, setPreguntasArray] = useState(() => {
     const saved = sessionStorage.getItem("preguntasArray");
     return saved ? JSON.parse(saved) : [];
-  });
+  }); // Guardar las preguntas en un array para poder retroceder en el cuestionario si es necesario (se guarda en el sessionStorage)
+
   const [pregunta, setPregunta] = useState(() => {
     const saved = sessionStorage.getItem("pregunta");
     return saved ? JSON.parse(saved) : {};
-  });
+  }); // Guardar la pregunta actual (se guarda en el sessionStorage)
+
   const [selectedAnswer, setSelectedAnswer] = useState(() => {
     const saved = sessionStorage.getItem("selectedAnswer");
     return saved ? JSON.parse(saved) : null;
-  });
+  }); // Guardar la respuesta seleccionada (se guarda en el sessionStorage)
 
-  // Save state to session storage whenever it changes
+ 
   useEffect(() => {
     sessionStorage.setItem("preguntasArray", JSON.stringify(preguntasArray));
-  }, [preguntasArray]);
+  }, [preguntasArray]); // Guardar el array de preguntas en el sessionStorage
 
   useEffect(() => {
     sessionStorage.setItem("pregunta", JSON.stringify(pregunta));
-  }, [pregunta]);
+  }, [pregunta]); // Guardar la pregunta actual en el sessionStorage
 
   useEffect(() => {
     sessionStorage.setItem("selectedAnswer", JSON.stringify(selectedAnswer));
-  }, [selectedAnswer]);
+  }, [selectedAnswer]); // Guardar la respuesta seleccionada en el sessionStorage
 
   useEffect(() => {
-    // Reset pregunta to null when tech changes
-    setPregunta(null);
-
+   
+    setPregunta(null); // Resetear la pregunta actual al cambiar de tecnología
+ 
     const fetchData = async () => {
       try {
         const response = await fetch(
           `http://${window.location.hostname}:8000/pregunta?tech=${techAct}&id=1`
-        );
+        ); // Fetch de la primera pregunta de la tecnología seleccionada
+
         if (!response.ok) {
-          throw new Error("Failed to fetch the first question");
+          throw new Error("Failed to fetch the first question"); // Error si no se puede hacer el fetch
         }
-        const data = await response.json();
-        setPregunta(data);
+
+        const data = await response.json(); // Guardar la pregunta en data
+        setPregunta(data); // Guardar la pregunta en el estado
+
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error("Error fetching data: ", error); // Error si no se puede hacer el fetch
       }
     };
 
-    fetchData();
-  }, [techAct]); // Re-fetch when tech changes
+    fetchData(); // Llamar a la función fetchData
+
+  }, [techAct]); // Recargar la página al cambiar de tecnología
 
   useEffect(() => {
-    // Dynamically register the language
-    registerLanguage(languageAct);
-  }, [languageAct]);
+    registerLanguage(languageAct); // Registrar el lenguaje seleccionado de forma dinámica
+  }, [languageAct]); // Cambiar el lenguaje al seleccionar uno nuevo
 
   function previousQuestion() {
-    if (preguntasArray.length > 0) {
-      const lastEntry = preguntasArray[preguntasArray.length - 1];
-      const { idpregunta, idrespuesta } = lastEntry;
+    /**
+     * Recupera la pregunta anterior y la respuesta seleccionada de la lista de preguntas
+     * 
+     * Si no hay preguntas en la lista, muestra un mensaje de advertencia
+     * 
+     * Si hay preguntas en la lista, recupera la última entrada de la lista y realiza un fetch de la pregunta anterior
+     * 
+     * Si no se puede hacer el fetch, muestra un mensaje de error
+     */
 
-      // Remove the last entry from the preguntasArray
+    if (preguntasArray.length > 0) { // Si hay preguntas en la lista
+      const lastEntry = preguntasArray[preguntasArray.length - 1]; // Recuperar la última entrada de la lista
+      const { idpregunta, idrespuesta } = lastEntry; // Guardar el id de la pregunta y de la respuesta seleccionada
+
+      // Eliminar la última entrada de la lista de preguntas
       setPreguntasArray((prevPreguntasArray) =>
         prevPreguntasArray.slice(0, -1)
       );
 
-      // Fetch the previous question data based on the last entry
+      // Recuperar la pregunta anterior y la respuesta seleccionada
       const fetchData = async () => {
         try {
           const response = await fetch(
             `http://${window.location.hostname}:8000/pregunta?id=${idpregunta}&tech=${techAct}`
           );
+
           if (!response.ok) {
             throw new Error("Failed to fetch the previous question");
           }
-          const data = await response.json();
-          setPregunta(data);
 
-          // Find and set the selected answer
+          const data = await response.json(); // Guardar la pregunta anterior
+          setPregunta(data); // Guardar la pregunta anterior
+ 
+          // Recuperar la respuesta seleccionada
           const previousAnswer = data.answers.find(
             (answer) => answer.id === idrespuesta
           );
-          setSelectedAnswer(previousAnswer);
+
+          setSelectedAnswer(previousAnswer); // Guardar la respuesta seleccionada
+
         } catch (error) {
-          console.error("Error fetching data: ", error);
+          console.error("Error fetching data: ", error); // Error si no se puede hacer el fetch
         }
       };
 
-      fetchData();
+      fetchData(); // Llamar a la función fetchData
+
     } else {
-      console.warn("No previous question available");
+      console.warn("No previous question available"); // Mostrar un mensaje de advertencia si no hay preguntas en la lista
     }
   }
 
-  function renderAnswer(respuesta) {
-    setSelectedAnswer(respuesta);
+  function renderAnswer(respuesta) { // Mostrar la respuesta seleccionada
+    setSelectedAnswer(respuesta); // Guardar la respuesta seleccionada en el estado selectedAnswer
   }
 
   function nextQuestion(idpregunta, idrespuesta) {
+    /**
+     * Realiza un fetch de la siguiente pregunta y guarda la pregunta actual y la respuesta seleccionada en la lista de preguntas
+     * 
+     * Si no se puede hacer el fetch, muestra un mensaje de error
+     * 
+     * Si la pregunta actual es la última, muestra un mensaje de felicitación
+     * 
+     * Si la respuesta seleccionada es nula, no hace nada
+     * 
+     * @param {number} idpregunta - El id de la pregunta actual
+     * @param {number} idrespuesta - El id de la respuesta seleccionada
+     */
+
     const fetchData = async () => {
       try {
         const response = await fetch(
           `http://${window.location.hostname}:8000/siguiente?tech=${techAct}&actual=${idpregunta}&answer=${idrespuesta}`
         );
+
         if (!response.ok) {
           throw new Error("Failed to fetch the next question");
         }
-        const data = await response.json();
-        setPregunta(data);
+
+        const data = await response.json(); // Guardar la siguiente pregunta
+        setPregunta(data); // Guardar la siguiente pregunta
 
         setPreguntasArray((prevPreguntasArray) => [
           ...prevPreguntasArray,
           { idpregunta, idrespuesta },
-        ]);
+        ]); // Guardar la pregunta actual y la respuesta seleccionada en la lista de preguntas
+
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error); // Error si no se puede hacer el fetch
       }
     };
 
-    fetchData();
-    setSelectedAnswer(null);
+    fetchData(); // Llamar a la función fetchData
+
+    setSelectedAnswer(null); // Resetear la respuesta seleccionada
   }
 
   return (
@@ -139,13 +177,14 @@ function Cuestionario({ tech, language }) {
           className="preText"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(pregunta?.preText || ''),
-          }}
+          }}  // Muestra el texto preivio de la pregunta actual
         ></p>
 
-        {pregunta?.command?.length > 0 && (
+        
+        {pregunta?.command?.length > 0 && ( // Muestra el comando de la pregunta actual si lo hay
           <div className="command">
             <div className="code-block">
-              <Lowlight
+              <Lowlight 
                 language={
                   Lowlight.hasLanguage(languageAct) ? languageAct : "bash"
                 }
@@ -153,7 +192,7 @@ function Cuestionario({ tech, language }) {
                 className="code"
               />
             </div>
-            {pregunta.notes && (
+            {pregunta.notes && ( // Muestra las notas de la pregunta actual si las hay
               <p className="notes">
                 <em>{pregunta.notes}</em>
               </p>
@@ -161,28 +200,28 @@ function Cuestionario({ tech, language }) {
           </div>
         )}
 
-        <h2 className="pregunta">{pregunta?.text}</h2>
+        <h2 className="pregunta">{pregunta?.text}</h2> {/* Muestra el texto de la pregunta actual */}
 
         <section>
           <form className="respuestas">
-            {pregunta?.answers?.map((answer) => (
+            {pregunta?.answers?.map((answer) => ( // Muestra las respuestas de la pregunta actual y las guarda en el estado selectedAnswer
               <button
                 key={answer.id}
                 className={`respuesta ${
                   selectedAnswer?.id === answer.id ? "selected" : ""
                 }`}
                 onClick={(e) => {
-                  e.preventDefault(); // prevent form submission
-                  renderAnswer(answer);
+                  e.preventDefault(); // Prevenir la selección de la respuesta
+                  renderAnswer(answer); // Guardar la respuesta seleccionada
                 }}
               >
-                {answer.text}
+                {answer.text} {/* Muestra el texto de la respuesta */}
               </button>
             ))}
           </form>
 
           <div className="separador"></div>
-          {selectedAnswer && (
+          {selectedAnswer && ( // Muestra la respuesta seleccionada y los datos asociados a ella
             <>
               <div className="respuestaRender">
                 <motion.div
@@ -229,7 +268,7 @@ function Cuestionario({ tech, language }) {
                 </motion.div>
               </div>
 
-              {pregunta?.last && (
+              {pregunta?.last && ( // Muestra un mensaje de felicitación si la pregunta actual es la última
                 <p>
                   ¡Enhorabuena! Has completado el cuestionario. Si has seguido
                   las instrucciones, deberías haber configurado correctamente tu{" "}
