@@ -11,15 +11,12 @@ function LateralNav() {
 
   const actualTech = locationSplit[locationSplit.length - 1];
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("http://51.21.134.236:8000/tecnologias");
         const data = await response.json();
         setDatos(data);
-
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -27,7 +24,6 @@ function LateralNav() {
 
     fetchData();
   }, []);
-
 
   return (
     <motion.div
@@ -39,23 +35,23 @@ function LateralNav() {
       <Sidebar className="navBar">
         <Sidebar.Items className="">
           <Sidebar.ItemGroup className="">
-            {datos?.map((element, index) => (
-              <Link to={"/tech/" + element.tech} key={element.tech}>
+            {(datos || []).map((element, index) => (
+              <Link to={"/tech/" + element?.tech} key={element?.tech}>
                 <Sidebar.Item
-                  key={element.tech}
+                  key={element?.tech}
                   className={
-                    element.tech === actualTech
+                    element?.tech === actualTech
                       ? "navBarLink seleccionado"
                       : "navBarLink"
                   }
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   <img
-                    src={process.env.PUBLIC_URL + "/icons/" + element.icon}
-                    alt={"logo de " + element.name}
+                    src={process.env.PUBLIC_URL + "/icons/" + element?.icon}
+                    alt={"logo de " + element?.name}
                     className="navBarImage"
                   />
-                  <p className="ml-6"> {element.name} </p>
+                  <p className="ml-6"> {element?.name} </p>
                 </Sidebar.Item>
               </Link>
             ))}
