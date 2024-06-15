@@ -9,7 +9,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/tecnologias");
+        const response = await fetch("http://51.21.134.236:8000/tecnologias");
         const data = await response.json();
         setDatos(data);
       } catch (error) {
