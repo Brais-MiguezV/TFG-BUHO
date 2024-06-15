@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ScrollRestoration } from "react-router-dom";
 
 function Home() {
   const [datos, setDatos] = useState([]);
@@ -9,7 +8,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://51.21.134.236:8000/tecnologias");
+        const response = await fetch(`http://${window.location.hostname}:8000/tecnologias`);
         const data = await response.json();
         setDatos(data);
       } catch (error) {

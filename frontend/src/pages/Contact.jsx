@@ -24,7 +24,7 @@ function Contact() {
     };
 
     try {
-      const response = await fetch("http://51.21.134.236:8000/send-email", {
+      const response = await fetch(`http://${window.location.hostname}:8000/send-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

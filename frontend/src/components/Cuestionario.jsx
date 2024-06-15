@@ -6,12 +6,64 @@ import DOMPurify from "dompurify";
 
 import "highlight.js/styles/github-dark.css";
 
+// Register the languages
+registerLanguage('bash');
+
 function Cuestionario({ tech, language }) {
   const techAct = tech;
   const languageAct = language;
-  const [preguntasArray, setPreguntasArray] = useState([]);
-  const [pregunta, setPregunta] = useState({});
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [preguntasArray, setPreguntasArray] = useState(() => {
+    const saved = sessionStorage.getItem("preguntasArray");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [pregunta, setPregunta] = useState(() => {
+    const saved = sessionStorage.getItem("pregunta");
+    return saved ? JSON.parse(saved) : {};
+  });
+  const [selectedAnswer, setSelectedAnswer] = useState(() => {
+    const saved = sessionStorage.getItem("selectedAnswer");
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  // Save state to session storage whenever it changes
+  useEffect(() => {
+    sessionStorage.setItem("preguntasArray", JSON.stringify(preguntasArray));
+  }, [preguntasArray]);
+
+  useEffect(() => {
+    sessionStorage.setItem("pregunta", JSON.stringify(pregunta));
+  }, [pregunta]);
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedAnswer", JSON.stringify(selectedAnswer));
+  }, [selectedAnswer]);
+
+  useEffect(() => {
+    // Reset pregunta to null when tech changes
+    setPregunta(null);
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://${window.location.hostname}:8000/pregunta?tech=${techAct}&id=1`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch the first question");
+        }
+        const data = await response.json();
+        setPregunta(data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, [techAct]); // Re-fetch when tech changes
+
+  useEffect(() => {
+    // Dynamically register the language
+    registerLanguage(languageAct);
+  }, [languageAct]);
 
   function previousQuestion() {
     if (preguntasArray.length > 0) {
@@ -27,14 +79,12 @@ function Cuestionario({ tech, language }) {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `http://51.21.134.236:8000/pregunta?id=${idpregunta}&tech=${techAct}`
+            `http://${window.location.hostname}:8000/pregunta?id=${idpregunta}&tech=${techAct}`
           );
-          let data = null;
           if (!response.ok) {
-            data = null;
-            return;
+            throw new Error("Failed to fetch the previous question");
           }
-          data = await response.json();
+          const data = await response.json();
           setPregunta(data);
 
           // Find and set the selected answer
@@ -57,37 +107,11 @@ function Cuestionario({ tech, language }) {
     setSelectedAnswer(respuesta);
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "http://51.21.134.236:8000/primerapregunta?tech=" + techAct
-        );
-        let data = null;
-        if (!response.ok) {
-          data = null;
-          return;
-        }
-        data = await response.json();
-        setPregunta(data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
-    fetchData();
-  }, [techAct]);
-
-  useEffect(() => {
-    // Dynamically register the language
-    registerLanguage(languageAct);
-  }, [languageAct]);
-
   function nextQuestion(idpregunta, idrespuesta) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://51.21.134.236:8000/siguiente?tech=${techAct}&actual=${idpregunta}&answer=${idrespuesta}`
+          `http://${window.location.hostname}:8000/siguiente?tech=${techAct}&actual=${idpregunta}&answer=${idrespuesta}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch the next question");
@@ -114,11 +138,11 @@ function Cuestionario({ tech, language }) {
         <p
           className="preText"
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(pregunta.preText),
+            __html: DOMPurify.sanitize(pregunta?.preText || ''),
           }}
         ></p>
 
-        {pregunta.command?.length > 0 && (
+        {pregunta?.command?.length > 0 && (
           <div className="command">
             <div className="code-block">
               <Lowlight
@@ -137,11 +161,11 @@ function Cuestionario({ tech, language }) {
           </div>
         )}
 
-        <h2 className="pregunta">{pregunta.text}</h2>
+        <h2 className="pregunta">{pregunta?.text}</h2>
 
         <section>
           <form className="respuestas">
-            {pregunta.answers?.map((answer) => (
+            {pregunta?.answers?.map((answer) => (
               <button
                 key={answer.id}
                 className={`respuesta ${
@@ -172,14 +196,18 @@ function Cuestionario({ tech, language }) {
                     <p
                       className="important"
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(selectedAnswer.additionalText),
+                        __html: DOMPurify.sanitize(
+                          selectedAnswer.additionalText
+                        ),
                       }}
                     ></p>
                   ) : (
                     <p
                       className="preText"
                       dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(selectedAnswer.additionalText),
+                        __html: DOMPurify.sanitize(
+                          selectedAnswer.additionalText
+                        ),
                       }}
                     ></p>
                   )}
@@ -200,13 +228,21 @@ function Cuestionario({ tech, language }) {
                   )}
                 </motion.div>
               </div>
+
+              {pregunta?.last && (
+                <p>
+                  ¡Enhorabuena! Has completado el cuestionario. Si has seguido
+                  las instrucciones, deberías haber configurado correctamente tu{" "}
+                  {techAct} para que sea más seguro.
+                </p>
+              )}
             </>
           )}
 
           <div className="botonesMic">
             <button
               className="butNorm anteriorBut"
-              disabled={pregunta.id === 1}
+              disabled={pregunta?.id === 1}
               onClick={(e) => {
                 e.preventDefault();
                 previousQuestion();
@@ -218,10 +254,10 @@ function Cuestionario({ tech, language }) {
             <button
               onClick={(e) => {
                 e.preventDefault(); // prevent form submission
-                nextQuestion(pregunta.id, selectedAnswer.id);
+                nextQuestion(pregunta?.id, selectedAnswer?.id);
               }}
               className="butNorm siguienteBut"
-              disabled={pregunta.last || selectedAnswer === null}
+              disabled={pregunta?.last || selectedAnswer === null}
             >
               Siguiente
             </button>

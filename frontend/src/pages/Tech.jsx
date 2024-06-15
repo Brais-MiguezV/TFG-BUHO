@@ -16,11 +16,10 @@ function Tech() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://51.21.134.236:8000/texto?tech=" + actualTech
+          `http://${window.location.hostname}:8000/texto?tech=` + actualTech
         );
         const data = await response.json();
         setDatos(data);
-
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -41,15 +40,23 @@ function Tech() {
         <h1 className="homeTitle">{datos.name}</h1>
 
         <section className="">
-          {datos.paragraphs?.map((paragraph, index) => {
-            return <p key={index} className="textoTech">{paragraph}</p>;
-          })}
+          <div className="w-full">
+            <details className="bg-gray-100 rounded-md shadow-md mb-4" style={{"transition": "all 0.3s"}}>
+              <summary className="cursor-pointer bg-orange-500 text-white font-semibold p-2 rounded-md">
+                Ver información
+              </summary>
+              <div className="p-4">
+                {datos.paragraphs?.map((paragraph, index) => (
+                  <p key={index} className="textoTech my-2">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </details>
+          </div>
 
-        <Cuestionario tech={datos?.tech} language={datos?.language}/>
-
+          <Cuestionario tech={datos?.tech} language={datos?.language} />
         </section>
-
-        
       </section>
     </motion.div>
   );

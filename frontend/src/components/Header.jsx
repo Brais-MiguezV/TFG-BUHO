@@ -1,8 +1,8 @@
 import React from "react";
 import logo from "../logo.png";
 import { motion } from "framer-motion";
-import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Header() {
   return (
@@ -23,8 +23,10 @@ function Header() {
           <h1>BUHO</h1>
         </Link>
 
-        <Link to="/contact" className="headerBut" >
-          <button className="">Contacto</button>
+        <Link to="/contact" className="headerBut">
+          <button className="">
+            <FontAwesomeIcon icon="fa-regular fa-comments" />
+          </button>
         </Link>
       </header>
     </motion.div>

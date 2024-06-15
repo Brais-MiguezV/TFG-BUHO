@@ -4,7 +4,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Tech from "./Tech";
 import Contact from "./Contact";
-import {ScrollRestoration} from "react-router-dom";
 
 function Pages() {
   const location = useLocation();
