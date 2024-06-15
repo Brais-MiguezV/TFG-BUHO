@@ -61,7 +61,7 @@ function Cuestionario({ tech, language }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/primerapregunta?tech=" + techAct
+          "http://51.21.134.236:8000/primerapregunta?tech=" + techAct
         );
         let data = null;
         if (!response.ok) {
@@ -87,7 +87,7 @@ function Cuestionario({ tech, language }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/siguiente?tech=${techAct}&actual=${idpregunta}&answer=${idrespuesta}`
+          `http://51.21.134.236:8000/siguiente?tech=${techAct}&actual=${idpregunta}&answer=${idrespuesta}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch the next question");
