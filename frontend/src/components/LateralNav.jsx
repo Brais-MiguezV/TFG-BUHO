@@ -7,6 +7,7 @@ import { FaBars } from "react-icons/fa"; // Import an icon for the toggle button
 function LateralNav() {
   const [datos, setDatos] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 800);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const location = useLocation();
 
   const locationSplit = location.pathname.split("/");
@@ -30,7 +31,10 @@ function LateralNav() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsCollapsed(window.innerWidth < 687);
+      setIsMobile(window.innerWidth < 800);
+      if (window.innerWidth >= 800) {
+        setIsCollapsed(false);
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -40,20 +44,23 @@ function LateralNav() {
   }, []);
 
   return (
-    <div style={{ position: "absolute" }}>
-      <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        <FaBars />
-      </button>
+    <div>
+      {isMobile && (
+        <button
+          className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <FaBars />
+        </button>
+      )}
       <motion.div
-        animate={{ x: isCollapsed ? -300 : 0 }}
+        animate={{ x: isCollapsed && isMobile ? -300 : 0 }}
         initial={{ x: -300 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 h-full z-40 bg-white shadow-lg ${
-          isCollapsed ? "hidden md:block" : "block"
-        }`}
+        className={`${
+          isCollapsed && isMobile ? "fixed top-0 left-0 h-full z-40 bg-white shadow-lg" : "relative"
+        } ${isMobile ? "" : "block md:block"}`}
+        style={{ width: isMobile ? (isCollapsed ? '0' : '16rem') : 'auto' }}
       >
         <Sidebar className="navBar h-full">
           <Sidebar.Items>
@@ -87,4 +94,3 @@ function LateralNav() {
 }
 
 export default LateralNav;
-
