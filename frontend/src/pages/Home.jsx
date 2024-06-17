@@ -100,7 +100,7 @@ function Home() {
           </p>
 
           <section className="homeTechs">
-            {datos?.map((element, index) => (
+            {(datos || [])?.map((element, index) => (
               <>
                 <Link to={"/tech/" + element.tech} key={index}>
                   <article className="homeTech">

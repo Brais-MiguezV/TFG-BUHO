@@ -93,7 +93,7 @@ function Contact() {
             <option value="sugerencia">Sugerencia</option>
             <option value="general">General</option>
             <option value="error">Error</option>
-            {datos?.map((element, index) => (
+            {(datos || [])?.map((element, index) => (
               <option value={element.tech} key={element.tech}>
                 {element.name}
               </option>

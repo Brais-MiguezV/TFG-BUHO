@@ -70,7 +70,7 @@ function LateralNav() {
         <Sidebar className="navBar h-full">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              {datos?.map((element) => (
+              {(datos || [])?.map((element) => (
                 <Link to={"/tech/" + element?.tech} key={element?.tech}>
                   <Sidebar.Item
                     key={element?.tech}
