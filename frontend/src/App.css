@@ -84,7 +84,7 @@
 
 .navBar {
   border: 1px solid var(--naranja-principal);
-  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
   padding: 5px;
   box-shadow: 0 0 10px #3246a842;
   width: 100%;
