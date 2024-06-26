@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Cuestionario from "../components/Cuestionario";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 function Tech() {
+  const navigate = useNavigate(); // Hook para navegar entre páginas
+  
   const location = useLocation(); // Hook para obtener la ubicación actual
 
   const locationSplit = location.pathname.split("/"); // Dividir la ubicación actual en partes
@@ -19,6 +23,11 @@ function Tech() {
           `http://${window.location.hostname}:8000/texto?tech=` + actualTech
         );
 
+        if (response.status === 404) {
+          navigate("/404");
+          return;
+        }
+        
         const data = await response.json();
         setDatos(data);
 

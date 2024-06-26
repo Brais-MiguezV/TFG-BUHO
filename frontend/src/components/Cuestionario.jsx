@@ -3,13 +3,16 @@ import Lowlight from "react-lowlight";
 import registerLanguage from "./auxiliar";
 import { motion } from "framer-motion";
 import DOMPurify from "dompurify";
+import { useNavigate } from "react-router-dom";
 
 import "highlight.js/styles/github-dark.css";
 
 registerLanguage('bash'); // Registrar el lenguaje bash por defecto
 
-function Cuestionario({ tech, language }) {
 
+function Cuestionario({ tech, language }) {
+  
+  const navigate = useNavigate(); // Hook para navegar entre páginas
   const techAct = tech; // Guardar la tecnología actual
   const languageAct = language; // Guardar el lenguaje actual
 
@@ -47,9 +50,19 @@ function Cuestionario({ tech, language }) {
  
     const fetchData = async () => {
       try {
+
+        if (techAct === undefined) {
+          return
+        }
         const response = await fetch(
           `http://${window.location.hostname}:8000/pregunta?tech=${techAct}&id=1`
         ); // Fetch de la primera pregunta de la tecnología seleccionada
+
+  
+        if (response.status === 404) {
+          navigate('/404')
+          return;
+        }
 
         if (!response.ok) {
           throw new Error("Failed to fetch the first question"); // Error si no se puede hacer el fetch
@@ -94,9 +107,17 @@ function Cuestionario({ tech, language }) {
       // Recuperar la pregunta anterior y la respuesta seleccionada
       const fetchData = async () => {
         try {
+          if (techAct === undefined) {
+            return
+          }
           const response = await fetch(
             `http://${window.location.hostname}:8000/pregunta?id=${idpregunta}&tech=${techAct}`
           );
+
+          if (response.status === 404) {
+            navigate('/404')
+            return;
+          }
 
           if (!response.ok) {
             throw new Error("Failed to fetch the previous question");
@@ -144,9 +165,17 @@ function Cuestionario({ tech, language }) {
 
     const fetchData = async () => {
       try {
+        if (techAct === undefined) {
+          return
+        }
         const response = await fetch(
           `http://${window.location.hostname}:8000/siguiente?tech=${techAct}&actual=${idpregunta}&answer=${idrespuesta}`
         );
+
+        if (response.status === 404) {
+          navigate('/404')
+          return;
+        }
 
         if (!response.ok) {
           throw new Error("Failed to fetch the next question");

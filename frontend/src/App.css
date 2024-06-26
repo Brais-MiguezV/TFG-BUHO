@@ -413,7 +413,6 @@ pre code.hljs {
 
 .headerBut {
   background-color: var(--azul-principal);
-
   text-align: center;
   display: flex;
   justify-content: center;
@@ -423,8 +422,8 @@ pre code.hljs {
   border-radius: 50%;
   transition: all 0.5s;
   font-family: "hackone";
-  width: 7vw;
-  height: 7vw;
+  width: 6vw;
+  height: 6vw;
   position: fixed;
   bottom: 30px;
   z-index: 3;

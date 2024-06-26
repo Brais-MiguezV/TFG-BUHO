@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
+ 
 function Home() {
   const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías
+  const navigate = useNavigate(); // Hook para navegar entre páginas
 
   useEffect(() => { // Hook para obtener los datos de las tecnologías
     const fetchData = async () => {  // Función asíncrona para obtener los datos de las tecnologías
       try {
         const response = await fetch(`http://${window.location.hostname}:8000/tecnologias`);
+        if (response.status === 404) {
+          navigate('/404');
+          return;
+        }
         const data = await response.json();
         setDatos(data);
       } catch (error) {

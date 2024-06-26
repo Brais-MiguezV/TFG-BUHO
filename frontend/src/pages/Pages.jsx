@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Tech from "./Tech";
 import Contact from "./Contact";
+import Error404 from "./Error404";
 
 function Pages() {
   const location = useLocation();
@@ -12,9 +13,8 @@ function Pages() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} /> {/*// this is the default route*/}
         <Route path="/tech/:tech" element={<Tech />} />
-        <Route path="contact" element={<Contact />} />
-
-     
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </AnimatePresence>
   );

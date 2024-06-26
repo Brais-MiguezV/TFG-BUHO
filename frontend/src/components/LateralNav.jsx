@@ -3,9 +3,12 @@ import { Sidebar } from "flowbite-react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 function LateralNav() {
-
+  
+  const navigate = useNavigate(); // Hook para navegar entre páginas
   const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías a mostrar
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 800); // Estado para saber si el menú está colapsado
   const [isMobile, setIsMobile] = useState(window.innerWidth < 800); // Estado para saber si la pantalla es móvil
@@ -21,6 +24,12 @@ function LateralNav() {
         const backendPort = "8000";
         const apiUrl = `http://${window.location.hostname}:${backendPort}/tecnologias`; // URL de la API para obtener las tecnologías
         const response = await fetch(apiUrl);
+
+        if (response.status === 404) {
+          navigate('/404');
+          return;
+        }
+        
         const data = await response.json();
         setDatos(data);
 

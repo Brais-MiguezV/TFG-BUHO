@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
+
 
 function Contact() {
+  const navigate  = useNavigate(); // Hook para navegar entre páginas
 
   const sendEmail = async (event) => { // Función para enviar el email
     event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
@@ -51,6 +54,10 @@ function Contact() {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://${window.location.hostname}:8000/tecnologias`); // Obtener los datos de las tecnologías
+        if (response.status === 404) {
+          navigate('/404')
+          return;
+        }
         const data = await response.json();
         setDatos(data);
 
