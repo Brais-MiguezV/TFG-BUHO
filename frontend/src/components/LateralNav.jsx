@@ -79,6 +79,26 @@ function LateralNav() {
         <Sidebar className="navBar h-full">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
+
+            <Link to={"/"} key={"/"}>
+                  <Sidebar.Item
+                    key={"Inicio"}
+                    className={
+                      location.pathname === "/"
+                        ? "navBarLink seleccionado"
+                        : "navBarLink"
+                    }
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    <img
+                      src={process.env.PUBLIC_URL + "/icons/home.webp"}
+                      alt={"logo de Inicio"}
+                      className="navBarImage"
+                    />
+                    <p className="ml-6"> Inicio </p>
+                  </Sidebar.Item>
+                </Link>
+
               {(datos || [])?.map((element) => (
                 <Link to={"/tech/" + element?.tech} key={element?.tech}>
                   <Sidebar.Item
