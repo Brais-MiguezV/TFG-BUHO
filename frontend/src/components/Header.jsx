@@ -24,7 +24,12 @@ function Header() {
 
         <Link to="/contact" className="headerBut">
           <button className="">
-            <img src={process.env.PUBLIC_URL + "/images/message.png"} alt="Imagen de mensaje" style={{"width": "100%", "height": "100%"}}/>
+            <img
+              src={process.env.PUBLIC_URL + "/images/message.png"}
+              alt="Imagen de mensaje"
+              style={{ width: "50%", height: "50%", margin: "0 auto" }}
+            />
+            Contacto
           </button>
         </Link>
       </header>
