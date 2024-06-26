@@ -7,10 +7,9 @@ import Pages from "./pages/Pages";
 function App() {
   return (
     <>
-      <BrowserRouter> 
-
+      <BrowserRouter>
         <Header />
-        
+
         <div className="mainDiv">
           <LateralNav />
           <Pages />

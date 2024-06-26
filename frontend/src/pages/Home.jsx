@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
- 
 function Home() {
   const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías
   const navigate = useNavigate(); // Hook para navegar entre páginas
 
-  useEffect(() => { // Hook para obtener los datos de las tecnologías
-    const fetchData = async () => {  // Función asíncrona para obtener los datos de las tecnologías
+  useEffect(() => {
+    // Hook para obtener los datos de las tecnologías
+    const fetchData = async () => {
+      // Función asíncrona para obtener los datos de las tecnologías
       try {
-        const response = await fetch(`http://${window.location.hostname}:8000/tecnologias`);
+        const response = await fetch(
+          `http://${window.location.hostname}:8000/tecnologias`
+        );
         if (response.status === 404) {
-          navigate('/404');
+          navigate("/404");
           return;
         }
         const data = await response.json();
@@ -25,7 +28,6 @@ function Home() {
 
     fetchData(); // Llamar a la función para obtener los datos
     window.scrollTo(0, 0); // Hacer scroll al principio de la página
-    
   }, []);
 
   return (
@@ -43,21 +45,25 @@ function Home() {
         <section className="homeSection">
           <h2 className="homeSubtitle">Antes de empezar, ¿qué es BUHO?</h2>
           <p className="homeText">
-            BUHO son las siglas de <em>Best Universal Hardening Operatives</em>.
-            ¿Te ha quedado claro? Probablemente no, pero no te preocupes, es
-            normal.
+            BUHO son las siglas de{" "}
+            <em className="orange">Best Universal Hardening Operatives</em>. ¿Te
+            ha quedado claro?
           </p>
+
+          <p>Probablemente no, pero no te preocupes, es normal.</p>
 
           <p>
             A día de hoy, ¿cuántas empresas dependen de sistemas informáticos?
             ¿Y cuántas de ellas han sido víctimas de ciberataques? La principal
             causa de estos ciberataques es la falta de conocimiento de cómo
-            poder proteger los sistemas de forma más eficiente y efectiva. Es
-            por ello que se ha creado esta plataforma. BUHO es el resultado de
-            un Trabajo de Fin de Grado que pretende que cualquier persona, sin
-            importar su nivel de conocimientos, pueda proteger sus sistemas de
-            la mejor forma posible. Evitando así, en la medida de lo posible,
-            ser víctima de ciberataques.
+            poder proteger los sistemas de forma más{" "}
+            <strong className="orange">eficiente</strong> y{" "}
+            <strong className="orange">efectiva</strong>. Es por ello que se ha
+            creado esta plataforma. <span className="orange">BUHO</span> es el
+            resultado de un Trabajo de Fin de Grado que pretende que cualquier
+            persona, sin importar su nivel de conocimientos, pueda proteger sus
+            sistemas de la mejor forma posible. Evitando así, en la medida de lo
+            posible, ser víctima de ciberataques.
           </p>
 
           <img
@@ -72,9 +78,10 @@ function Home() {
 
           <p>
             Hemos pensado que la forma más entretenida para que los usuarios
-            puedan proteger sus sistemas es a través de un cuestionario. En base
-            a las respuestas de los usuarios, se indicarán una serie de comandos
-            para ejecutar y así poder proteger los sistemas de la mejor forma
+            puedan proteger sus sistemas es a través de un{" "}
+            <strong className="orange">cuestionario</strong>. En base a las
+            respuestas de los usuarios, se indicarán una serie de comandos para
+            ejecutar y así poder proteger los sistemas de la mejor forma
             posible.
           </p>
 
@@ -95,6 +102,7 @@ function Home() {
             <Link to="/contact" className="orange">
               contacto
             </Link>
+            .
           </p>
 
           <h2 className="homeSubtitle">
@@ -124,7 +132,6 @@ function Home() {
           </section>
         </section>
       </section>
-      
     </motion.div>
   );
 }

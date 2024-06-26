@@ -5,9 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-
 function LateralNav() {
-  
   const navigate = useNavigate(); // Hook para navegar entre páginas
   const [datos, setDatos] = useState([]); // Estado para almacenar los datos de las tecnologías a mostrar
   const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 800); // Estado para saber si el menú está colapsado
@@ -17,22 +15,23 @@ function LateralNav() {
   const locationSplit = location.pathname.split("/"); // Dividir la ubicación actual en partes
   const actualTech = locationSplit[locationSplit.length - 1]; // Obtener la última parte de la ubicación actual (la tecnología actual)
 
-  useEffect(() => { // Hook para obtener los datos de las tecnologías
+  useEffect(() => {
+    // Hook para obtener los datos de las tecnologías
 
-    const fetchData = async () => { // Función asíncrona para obtener los datos de las tecnologías
+    const fetchData = async () => {
+      // Función asíncrona para obtener los datos de las tecnologías
       try {
         const backendPort = "8000";
         const apiUrl = `http://${window.location.hostname}:${backendPort}/tecnologias`; // URL de la API para obtener las tecnologías
         const response = await fetch(apiUrl);
 
         if (response.status === 404) {
-          navigate('/404');
+          navigate("/404");
           return;
         }
-        
+
         const data = await response.json();
         setDatos(data);
-
       } catch (error) {
         console.error("Error fetching data: ", error); // Mostrar error en consola si no se pueden obtener los datos
       }
@@ -41,20 +40,23 @@ function LateralNav() {
     fetchData(); // Llamar a la función para obtener los datos
   }, []);
 
-  useEffect(() => { // Hook para saber si la pantalla es móvil y si el menú está colapsado
-    const handleResize = () => { // Función para manejar el evento de redimensionar la pantalla
+  useEffect(() => {
+    // Hook para saber si la pantalla es móvil y si el menú está colapsado
+    const handleResize = () => {
+      // Función para manejar el evento de redimensionar la pantalla
       setIsMobile(window.innerWidth < 800); // Actualizar el estado de isMobile si la pantalla es menor a 800px
-      if (window.innerWidth >= 800) { // Si la pantalla es mayor o igual a 800px
+      if (window.innerWidth >= 800) {
+        // Si la pantalla es mayor o igual a 800px
         setIsCollapsed(false); // Actualizar el estado de isCollapsed a false
-      } 
+      }
     };
 
     window.addEventListener("resize", handleResize); // Añadir un evento para manejar el redimensionamiento de la pantalla
 
-    return () => { // Función para limpiar el evento de redimensionar la pantalla
+    return () => {
+      // Función para limpiar el evento de redimensionar la pantalla
       window.removeEventListener("resize", handleResize); // Eliminar el evento de redimensionar la pantalla
     };
-
   }, []); // Ejecutar el hook solo una vez
 
   return (
@@ -72,32 +74,33 @@ function LateralNav() {
         initial={{ x: -300 }}
         transition={{ duration: 0.5 }}
         className={`${
-          isCollapsed && isMobile ? "fixed top-0 left-0 h-full z-40 bg-white shadow-lg hidden" : "relative"
+          isCollapsed && isMobile
+            ? "fixed top-0 left-0 h-full z-40 bg-white shadow-lg hidden"
+            : "relative"
         } ${isMobile ? "" : "block md:block"}`}
-        style={{ width: isMobile ? (isCollapsed ? '0' : '16rem') : 'auto' }}
+        style={{ width: isMobile ? (isCollapsed ? "0" : "16rem") : "auto" }}
       >
         <Sidebar className="navBar h-full">
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-
-            <Link to={"/"} key={"/"}>
-                  <Sidebar.Item
-                    key={"Inicio"}
-                    className={
-                      location.pathname === "/"
-                        ? "navBarLink seleccionado"
-                        : "navBarLink"
-                    }
-                    style={{ display: "flex", alignItems: "center" }}
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/icons/home.webp"}
-                      alt={"logo de Inicio"}
-                      className="navBarImage"
-                    />
-                    <p className="ml-6"> Inicio </p>
-                  </Sidebar.Item>
-                </Link>
+              <Link to={"/"} key={"/"}>
+                <Sidebar.Item
+                  key={"Inicio"}
+                  className={
+                    location.pathname === "/"
+                      ? "navBarLink seleccionado"
+                      : "navBarLink"
+                  }
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + "/icons/home.webp"}
+                    alt={"logo de Inicio"}
+                    className="navBarImage"
+                  />
+                  <p className="ml-6"> Inicio </p>
+                </Sidebar.Item>
+              </Link>
 
               {(datos || [])?.map((element) => (
                 <Link to={"/tech/" + element?.tech} key={element?.tech}>

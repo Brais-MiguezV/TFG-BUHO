@@ -11,7 +11,7 @@ function Pages() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} /> {/*// this is the default route*/}
+        <Route path="/" element={<Home />} />
         <Route path="/tech/:tech" element={<Tech />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Error404 />} />

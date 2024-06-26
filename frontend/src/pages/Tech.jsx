@@ -4,10 +4,9 @@ import Cuestionario from "../components/Cuestionario";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-
 function Tech() {
   const navigate = useNavigate(); // Hook para navegar entre páginas
-  
+
   const location = useLocation(); // Hook para obtener la ubicación actual
 
   const locationSplit = location.pathname.split("/"); // Dividir la ubicación actual en partes
@@ -16,8 +15,10 @@ function Tech() {
 
   const [datos, setDatos] = useState([]); // Estado para almacenar los datos de la tecnología actual
 
-  useEffect(() => { // Hook para obtener los datos de la tecnología actual
-    const fetchData = async () => { // Función asíncrona para obtener los datos de la tecnología actual
+  useEffect(() => {
+    // Hook para obtener los datos de la tecnología actual
+    const fetchData = async () => {
+      // Función asíncrona para obtener los datos de la tecnología actual
       try {
         const response = await fetch(
           `http://${window.location.hostname}:8000/texto?tech=` + actualTech
@@ -27,10 +28,9 @@ function Tech() {
           navigate("/404");
           return;
         }
-        
+
         const data = await response.json();
         setDatos(data);
-
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -38,9 +38,8 @@ function Tech() {
 
     fetchData(); // Llamar a la función para obtener los datos
     window.scrollTo(0, 0); // Hacer scroll al principio de la página
+  }, [actualTech]); // Ejecutar el hook cada vez que actualTech cambie
 
-  }, [actualTech]);  // Ejecutar el hook cada vez que actualTech cambie
- 
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
@@ -53,7 +52,10 @@ function Tech() {
 
         <section className="">
           <div className="w-full">
-            <details className="bg-gray-100 rounded-md shadow-md mb-4" style={{"transition": "all 0.3s"}}>
+            <details
+              className="bg-gray-100 rounded-md shadow-md mb-4"
+              style={{ transition: "all 0.3s" }}
+            >
               <summary className="cursor-pointer bg-orange-500 text-white font-semibold p-2 rounded-md">
                 Ver información
               </summary>
@@ -67,7 +69,11 @@ function Tech() {
             </details>
           </div>
 
-          <Cuestionario tech={datos?.tech} language={datos?.language} />
+          <Cuestionario
+            tech={datos?.tech}
+            language={datos?.language}
+            nombreTech={datos?.name}
+          />
         </section>
       </section>
     </motion.div>
