@@ -29,6 +29,8 @@ function Cuestionario({ tech, language, nombreTech }) {
     return saved ? JSON.parse(saved) : null;
   }); // Guardar la respuesta seleccionada (se guarda en el sessionStorage)
 
+  const [isFinished, setIsFinished] = useState(false); // Guardar si el cuestionario ha terminado
+
   useEffect(() => {
     sessionStorage.setItem("preguntasArray", JSON.stringify(preguntasArray));
   }, [preguntasArray]); // Guardar el array de preguntas en el sessionStorage
@@ -131,6 +133,7 @@ function Cuestionario({ tech, language, nombreTech }) {
       };
 
       fetchData(); // Llamar a la función fetchData
+      setIsFinished(false); // Resetear el estado isFinished
     } else {
       console.warn("No previous question available"); // Mostrar un mensaje de advertencia si no hay preguntas en la lista
     }
@@ -139,6 +142,10 @@ function Cuestionario({ tech, language, nombreTech }) {
   function renderAnswer(respuesta) {
     // Mostrar la respuesta seleccionada
     setSelectedAnswer(respuesta); // Guardar la respuesta seleccionada en el estado selectedAnswer
+
+    if (pregunta?.last){
+      setIsFinished(true); // Resetear el estado isFinished
+    }
   }
 
   function nextQuestion(idpregunta, idrespuesta) {
@@ -180,6 +187,10 @@ function Cuestionario({ tech, language, nombreTech }) {
           ...prevPreguntasArray,
           { idpregunta, idrespuesta },
         ]); // Guardar la pregunta actual y la respuesta seleccionada en la lista de preguntas
+
+        if (pregunta?.last) {
+          setIsFinished(true); // Si la pregunta actual es la última, guardar el estado isFinished
+        }
       } catch (error) {
         console.error("Error fetching data:", error); // Error si no se puede hacer el fetch
       }
@@ -311,23 +322,35 @@ function Cuestionario({ tech, language, nombreTech }) {
               Anterior
             </button>
 
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                if (pregunta?.last) {
+            {isFinished && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
                   setPregunta(null);
                   setPreguntasArray([]);
                   setSelectedAnswer(null);
-
+                  setIsFinished(false);
                   window.location.reload();
-                } else {
+                }}
+                className="butNorm siguienteBut"
+              >
+                Volver al principio
+              </button>
+            )}
+
+            {!isFinished && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+
                   nextQuestion(pregunta?.id, selectedAnswer?.id);
-                }
-              }}
-              className="butNorm siguienteBut"
-            >
-              {pregunta?.last ? "Volver al principio" : "Siguiente"}
-            </button>
+                }}
+                className="butNorm siguienteBut"
+                disabled={!selectedAnswer}
+              >
+                Siguiente
+              </button>
+            )}
           </div>
         </section>
       </div>

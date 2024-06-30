@@ -12,9 +12,17 @@ function Contact() {
     const email = document.getElementById("email").value; // Obtener el valor del campo email
     const message = document.getElementById("message").value; // Obtener el valor del campo mensaje
 
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Patrón de validación para el email
+
     if (name === "" || email === "" || message === "") {
       // Si alguno de los campos está vacío
       alert("Por favor, rellena todos los campos"); // Mostrar un mensaje de alerta
+      return; // Salir de la función
+    }
+
+    if (!emailPattern.test(email)) {
+      // Si el email no tiene el formato correcto
+      alert("Por favor, introduce un email válido"); // Mostrar un mensaje de alerta
       return; // Salir de la función
     }
 
@@ -22,8 +30,8 @@ function Contact() {
       // Datos del email
       subject: "Sugerencia de BUHO", // Asunto del email
       sender: email, // Remitente del email
-      body: ` 
-                Nombre: ${name} 
+      body: `
+                Nombre: ${name}
                 Email: ${email}
                 Mensaje: ${message}
             `,
@@ -43,6 +51,10 @@ function Contact() {
 
       if (response.ok) {
         alert("Email enviado con éxito"); // Mostrar mensaje de éxito
+        document.getElementById("name").value = ""; // Limpiar campo nombre
+        document.getElementById("email").value = ""; // Limpiar campo email
+        document.getElementById("message").value = ""; // Limpiar campo mensaje
+        document.getElementById("seleccion").value = "sugerencia"; // Limpiar campo selección
       } else {
         alert("Error al enviar el email"); // Mostrar mensaje de error
       }
